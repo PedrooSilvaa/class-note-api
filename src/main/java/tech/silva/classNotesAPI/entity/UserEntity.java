@@ -18,5 +18,9 @@ public class UserEntity {
 
     private String name;
 
-
+    public UserEntity(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
 }
