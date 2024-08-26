@@ -3,23 +3,23 @@ package tech.silva.classNotesAPI.web.dto;
 import tech.silva.classNotesAPI.entity.UserEntity;
 
 public record UserResponseDto(Long id,
+                              String name,
                               String username,
-                              String password,
-                              String name) {
+                              String role) {
 
-    public UserResponseDto(Long id, String username, String password, String name) {
+    public UserResponseDto(Long id, String name, String username, String role) {
         this.id = id;
-        this.username = username;
-        this.password = password;
         this.name = name;
+        this.username = username;
+        this.role = role;
     }
 
     public static UserResponseDto toUserResponse(UserEntity userEntity){
         return new UserResponseDto(
                 userEntity.getId(),
+                userEntity.getName(),
                 userEntity.getUsername(),
-                userEntity.getPassword(),
-                userEntity.getName()
+                userEntity.getRole().name()
         );
     }
 }

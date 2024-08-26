@@ -15,10 +15,11 @@ public class UserEntity {
     @Column(unique = true)
     private String username;
     private String password;
-    private Role role = Role.CLIENT;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.ROLE_CLIENT;
 
     public enum Role{
-        CLIENT, ADMIN
+        ROLE_CLIENT, ROLE_ADMIN
     }
 
     public UserEntity(String name, String username, String password) {
@@ -26,4 +27,5 @@ public class UserEntity {
         this.username = username;
         this.password = password;
     }
+
 }

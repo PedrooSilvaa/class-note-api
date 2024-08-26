@@ -2,6 +2,9 @@ package tech.silva.classNotesAPI.web.dto;
 
 import tech.silva.classNotesAPI.entity.NoteTask;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public record TaskResponseDto (Long id,
                                String username,
                                String title,
@@ -24,5 +27,10 @@ public record TaskResponseDto (Long id,
                 noteTask.getDescription(),
                 noteTask.getAnnotation()
         );
+    }
+
+    public static List<TaskResponseDto> toListProductResponse(List<NoteTask> products){
+        return products.stream()
+                .map(product -> toResponse(product)).collect(Collectors.toList());
     }
 }

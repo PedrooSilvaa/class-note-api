@@ -16,7 +16,7 @@ public class NoteTask {
     private String title;
     private String description;
     private String annotation;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity user;
     private LocalDateTime date = LocalDateTime.now();
