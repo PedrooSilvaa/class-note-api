@@ -15,14 +15,15 @@ public class NoteTask {
     private Long id;
     private String title;
     private String description;
+    private String annotation;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private UserEntity user;
     private LocalDateTime date = LocalDateTime.now();
 
-    public NoteTask(String title, String description, UserEntity user) {
+    public NoteTask(String title, String description, String annotation) {
         this.title = title;
         this.description = description;
-        this.user = user;
+        this.annotation = annotation;
     }
 }
