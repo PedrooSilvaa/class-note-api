@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import tech.silva.classNotesAPI.exception.InvalidCredencialException;
 import tech.silva.classNotesAPI.exception.ObjectNotFoundException;
+import tech.silva.classNotesAPI.exception.PasswordInvalidException;
 import tech.silva.classNotesAPI.exception.UserUniqueViolationException;
 
 @RequiredArgsConstructor
@@ -81,5 +82,13 @@ public class ApiHandlerException {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(error);
+    }
+
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException ex, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
     }
 }

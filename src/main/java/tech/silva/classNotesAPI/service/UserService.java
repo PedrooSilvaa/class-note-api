@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.silva.classNotesAPI.entity.UserEntity;
 import tech.silva.classNotesAPI.exception.ObjectNotFoundException;
+import tech.silva.classNotesAPI.exception.PasswordInvalidException;
 import tech.silva.classNotesAPI.exception.UserUniqueViolationException;
 import tech.silva.classNotesAPI.repository.IUserRepository;
+import tech.silva.classNotesAPI.web.dto.PasswordChangeDto;
 
 @AllArgsConstructor
 @Service
@@ -33,5 +35,22 @@ public class UserService {
                 .orElseThrow(
                         () -> new ObjectNotFoundException(String.format("User username: %s not found", username))
                 );
+    }
+
+
+    public void changePassword(PasswordChangeDto changeDto, Long id) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("User id: %s not found", id))
+                );
+        if (!passwordEncoder.matches(changeDto.currentPassword(), user.getPassword())){
+            throw new PasswordInvalidException("Current password invalid");
+        }
+        if (!changeDto.newPassword().equalsIgnoreCase(changeDto.confirmPassword())){
+            throw new PasswordInvalidException("New password and Confirm Password invalid");
+        }
+
+        user.setPassword(passwordEncoder.encode(changeDto.newPassword()));
+        userRepository.save(user);
     }
 }
