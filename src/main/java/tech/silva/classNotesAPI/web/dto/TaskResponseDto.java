@@ -29,7 +29,7 @@ public record TaskResponseDto (Long id,
         );
     }
 
-    public static List<TaskResponseDto> toListProductResponse(List<NoteTask> products){
+    public static List<TaskResponseDto> toListTaskResponse(List<NoteTask> products){
         return products.stream()
                 .map(product -> toResponse(product)).collect(Collectors.toList());
     }

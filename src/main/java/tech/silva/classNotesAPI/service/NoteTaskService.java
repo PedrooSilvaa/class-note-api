@@ -9,6 +9,8 @@ import tech.silva.classNotesAPI.repository.INoteTaskRepository;
 import tech.silva.classNotesAPI.repository.IUserRepository;
 import tech.silva.classNotesAPI.web.dto.TaskCreateDto;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class NoteTaskService {
@@ -26,5 +28,12 @@ public class NoteTaskService {
         return noteTaskRepository.save(noteTask);
     }
 
+    public List<NoteTask> findAllByUser(Long id) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("User id: %s not found", id))
+                );
+        return noteTaskRepository.findAllByUser(user);
+    }
 }
 
