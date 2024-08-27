@@ -21,25 +21,26 @@ public class UserController {
 
     private final UserService userService;
 
+    //Method to create new user
     @PostMapping
     public ResponseEntity<UserResponseDto> saveUser(@RequestBody @Valid UserCreateDto createDto){
         UserEntity user = userService.saveUser(createDto.toUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponseDto.toUserResponse(user));
     }
 
+    //Method to search user by username
     @GetMapping("/username")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponseDto> findByUsername(@RequestParam String username){
-        System.out.println("ola");
         UserEntity user = userService.findByUsername(username);
         return ResponseEntity.ok().body(UserResponseDto.toUserResponse(user));
     }
 
+    //Method to update logged in user password
     @PutMapping
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Void> changePassword(@AuthenticationPrincipal JwtUserDetails userDetails,
                                                @RequestBody @Valid PasswordChangeDto changeDto){
-        System.out.println("ooooo");
         userService.changePassword(changeDto, userDetails.getId());
         return ResponseEntity.noContent().build();
     }

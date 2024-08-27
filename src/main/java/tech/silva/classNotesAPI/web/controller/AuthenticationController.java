@@ -28,6 +28,7 @@ public class AuthenticationController {
         this.authenticationManager = authenticationManager;
     }
 
+    //Method for existing user authentication
     @PostMapping(path = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> authentication(@RequestBody @Valid UserLoginDto dto, HttpServletRequest request) {
         try {

@@ -21,6 +21,7 @@ public class NoteTaskController {
 
     private final NoteTaskService noteTaskService;
 
+    //Method to save new Task
     @PostMapping
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<TaskResponseDto> saveTask(@RequestBody @Valid TaskCreateDto createDto,
@@ -29,6 +30,7 @@ public class NoteTaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(TaskResponseDto.toResponse(task));
     }
 
+    //Method for searching logged in user tasks
     @GetMapping("/current")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<List<TaskResponseDto>> listMyTasks(@AuthenticationPrincipal JwtUserDetails userDetails){
