@@ -37,4 +37,12 @@ public class NoteTaskController {
         List<NoteTask> tasks = noteTaskService.findAllByUser(userDetails.getId());
         return ResponseEntity.ok().body(TaskResponseDto.toListTaskResponse(tasks));
     }
+
+    @DeleteMapping("/{idTask}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Void> deleteById(@AuthenticationPrincipal JwtUserDetails userDetails,
+                                           @PathVariable Long idTask){
+        noteTaskService.deleteById(userDetails.getId(), idTask);
+        return ResponseEntity.ok().build();
+    }
 }
