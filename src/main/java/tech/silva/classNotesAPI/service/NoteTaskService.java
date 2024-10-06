@@ -35,5 +35,17 @@ public class NoteTaskService {
                 );
         return noteTaskRepository.findAllByUser(user);
     }
+
+    public void deleteById(Long id, Long idTask) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("User id: %s not found", id))
+                );
+        NoteTask task = noteTaskRepository.findByIdAndUser(idTask, user)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("Task id: %s not found", id))
+                );
+        noteTaskRepository.deleteById(task.getId());
+    }
 }
 

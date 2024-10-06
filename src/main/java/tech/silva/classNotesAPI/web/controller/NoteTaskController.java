@@ -21,6 +21,7 @@ public class NoteTaskController {
 
     private final NoteTaskService noteTaskService;
 
+    //Method to save new Task
     @PostMapping
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<TaskResponseDto> saveTask(@RequestBody @Valid TaskCreateDto createDto,
@@ -29,10 +30,19 @@ public class NoteTaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(TaskResponseDto.toResponse(task));
     }
 
+    //Method for searching logged in user tasks
     @GetMapping("/current")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<List<TaskResponseDto>> listMyTasks(@AuthenticationPrincipal JwtUserDetails userDetails){
         List<NoteTask> tasks = noteTaskService.findAllByUser(userDetails.getId());
         return ResponseEntity.ok().body(TaskResponseDto.toListTaskResponse(tasks));
+    }
+
+    @DeleteMapping("/{idTask}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Void> deleteById(@AuthenticationPrincipal JwtUserDetails userDetails,
+                                           @PathVariable Long idTask){
+        noteTaskService.deleteById(userDetails.getId(), idTask);
+        return ResponseEntity.ok().build();
     }
 }
